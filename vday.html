@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Happy Valentine's Day</title>
+
+<style>
+body{
+    margin:0;
+    background: rgb(230, 169, 180);
+    font-family: 'Great Vibes', cursive;
+    text-align:center;
+}
+
+h1{
+    color:rgb(135, 4, 30);
+    margin-top:70px;
+}
+
+/* Sections */
+.section{display:none;padding:30px;}
+.active{display:block;}
+
+/* Buttons */
+.next-btn{
+    background:#8B0000;
+    color:#ffb6c1;
+    padding:20px 35px;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    margin-top:20px;
+}
+
+/* Quiz */
+.quiz-box{
+    background: linear-gradient(135deg, #ffffff, #ffe6f0);
+    padding:30px;
+    border-radius:25px;
+    width:50%;
+    margin:auto;
+    color:#87041e;
+    box-shadow: 0 10px 25px rgba(135,4,30,0.2);
+}
+
+
+.option-btn{
+    display:block;
+    margin:15px auto;
+    padding:18px;
+    width:45%;          /* decreased length */
+    border-radius:20px;
+    border:none;
+    cursor:pointer;
+    font-size:16px;
+    background:#ffccd5;
+    color:#87041e;
+    transition:0.3s;
+}
+
+
+/* Envelope Hover */
+.photo-container{
+    position:relative;
+    display:inline-block;
+}
+
+.photo-container img{
+    width:300px;
+    border-radius:15px;
+}
+
+.envelope{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:150px;
+    height:90px;
+    background:darkred;
+    clip-path:polygon(0 0,100% 0,100% 100%,0 100%,50% 50%);
+    opacity:0;
+    transition:0.4s;
+}
+
+.photo-container:hover .envelope{
+    opacity:1;
+}
+
+/* Split */
+.split{display:flex;height:60vh;}
+.left,.right{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+
+/* Big Heart */
+.big-heart{
+    font-size:260px;   /* bigger */
+    color:#8B0000;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.big-heart:hover{
+    transform:scale(1.1);
+}
+
+
+
+/* Secret Buttons */
+.heart-btn{
+    position:relative;
+    background:darkred;
+    color:white;
+    border:none;
+    padding:15px;
+    width:150px;
+    height:90px;
+    margin:15px;
+    cursor:pointer;
+    border-radius:8px;
+    font-size:14px;
+    font-family: cursive;
+    display:flex;
+align-items:flex-start;   /* push content toward top */
+justify-content:center;
+padding-top:35px;         /* move text lower visually */
+
+}
+
+
+/* Envelope flap */
+.heart-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#a0001c;
+    clip-path:polygon(0 0, 50% 50%, 100% 0);
+}
+
+
+/* Popups */
+.popup{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:70%;
+    padding:30px;
+    border-radius:20px;
+    background: linear-gradient(135deg, #8B0000, #ff4d6d);
+    display:none;
+    z-index:10;
+    color:white;
+    box-shadow: 0 0 25px rgba(139,0,0,0.6);
+}
+
+
+.close{
+    position:absolute;
+    top:10px;
+    right:15px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+/* Heart OK Button */
+.heart-ok{
+    margin-top:20px;
+    background:darkred;
+    color:white;
+    border:none;
+    padding:15px;
+    width:80px;
+    height:70px;
+    clip-path: polygon(50% 15%, 61% 5%, 75% 5%, 85% 15%, 85% 30%, 50% 75%, 15% 30%, 15% 15%, 25% 5%, 39% 5%);
+    cursor:pointer;
+}
+
+/* Video */
+.video-container video{
+    width:400px;
+    border-radius:15px;
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<h1><b>Happy Valentine's Day</b></h1>
+<!-- INTRO SESSION -->
+<div id="section0" class="section active">
+    <h2 style="font-size:40px; color:#87041e; margin-top:80px;">
+        Welcome to the Virtual Valentine's Day Date 
+        of Surya and Shaswatha 💌
+    </h2>
+
+    <p style="font-size:22px; margin-top:30px;">
+        Enter the password to begin our date ✨
+    </p>
+
+    <input type="text" id="passInput" 
+        placeholder="Type here..."
+        style="padding:15px; width:250px; border-radius:20px; border:none; text-align:center; font-size:16px;">
+
+    <br><br>
+
+    <button class="next-btn" onclick="checkPassword()">
+        Enter 💖
+    </button>
+
+    <p id="passMessage" style="color:#87041e; font-size:18px; margin-top:20px;"></p>
+
+    <br>
+
+    <!-- CLUE SECTION -->
+    <p style="cursor:pointer; color:#8B0000; font-size:16px;"
+       onclick="showClue()">
+       Need a clue? 👀
+    </p>
+
+    <p id="clueText" style="color:#87041e; font-size:18px; margin-top:10px;"></p>
+</div>
+
+
+
+<!-- SESSION 1 QUIZ -->
+<div id="section1" class="section">
+<div class="quiz-box">
+<h2>Oru kutty Love Quiz 😉</h2>
+<div id="quiz"></div>
+<p id="feedback"></p>
+</div>
+</div>
+
+<!-- RESULT POPUP -->
+<div id="resultPopup" class="popup">
+<span class="close" onclick="closePopup()">X</span>
+<h2 id="scoreText"></h2>
+<p id="resultText"></p>
+<button class="heart-ok" onclick="continueAfterQuiz()"></button>
+</div>
+
+<!-- SESSION 2 -->
+<div id="section2" class="section">
+    <h2>Music time for my favorite musician</h2>
+
+    <div style="margin-top:30px;">
+
+        <a href="https://open.spotify.com/track/3gTSNLdCt7R4XX4YLtj7Fk?si=ef70db35babe4998" target="_blank">
+            <button class="next-btn">The first song that reminded you of me and you shared it with me</button>
+        </a>
+
+        <br><br>
+
+        <a href="https://open.spotify.com/track/61cO5mTOB2RQ5Kp03sNm3E?si=9ffac8c9cfcd452e" target="_blank">
+            <button class="next-btn">The song on repeat for me just before I confessed to you</button>
+        </a>
+
+        <br><br>
+
+        <a href="https://open.spotify.com/track/3Um4k1xWbxabFjwJAs8vdd?si=2610a904d6d94383 target="target="_blank">
+            <button class="next-btn">Our first spotify blend song</button>
+        </a>
+
+        <br><br>
+
+        <a href="https://open.spotify.com/track/5XjPxvh4lkpscSwkzu2dPY?si=a3b174484e6543b6" target="_blank">
+            <button class="next-btn">The song that we listened to together and cried for the first time</button>
+        </a>
+
+    </div>
+
+    <br><br>
+    <button class="next-btn" onclick="nextSection(3)">Next</button>
+</div>
+
+<!-- SESSION 3 -->
+<div id="section3" class="section">
+<div class="split">
+<div class="left">
+<h2>Click the Heart for a kutty surprise</h2>
+<div class="big-heart" onclick="heartSurprise()">❤</div>
+</div>
+
+<div class="right">
+<h2>Open When… </h2>
+<button class="heart-btn" onclick="openLetter('sad')">Sad</button>
+<button class="heart-btn" onclick="openLetter('miss')">Miss me</button>
+<button class="heart-btn" onclick="openLetter('sleep')">Sleepy</button>
+<button class="heart-btn" onclick="openLetter('motivation')">want motivation</button>
+</div>
+</div>
+<button class="next-btn" onclick="nextSection(4)">Next</button>
+</div>
+
+<!-- LETTER POPUP -->
+<div id="letterPopup" class="popup">
+<span class="close" onclick="closeLetter()">X</span>
+<p id="letterText"></p>
+<button class="heart-ok" onclick="closeLetter()"></button>
+</div>
+
+<!-- SESSION 4 -->
+<!-- SESSION 4 -->
+<div id="section4" class="section">
+    <h2>Are you ready for the final part of the surprise? </h2>
+
+    <div style="margin-top:30px;">
+        <button class="next-btn" onclick="showFinal()">Yes 💖</button>
+        <button id="noBtn" class="next-btn" onmouseover="moveNo()" onclick="moveNo()">No 🙈</button>
+    </div>
+
+    <div id="finalReveal" style="display:none; margin-top:40px;">
+        <img src="image.jpg" width="350" 
+             style="border-radius:20px; cursor:pointer;"
+             onclick="playFullscreenVideo()">
+
+        <video id="videoPlayer" style="display:none;" controls>
+            <source src="https://drive.google.com/file/d/1pHEetmBBBxWPJaKx7JBN47EUKt1U4jsB/view?usp=sharing" type="video/mp4">
+        </video>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+const quizData=[
+{q:"Our first text?",options:["7 July 2024","9 June 2024","8 July 2024","8 June 2024"],correct:2},
+{q:"Our first meet?",options:["8 Feb 2024","9 Feb 2023","7 Feb 2024","9 Feb 2024"],correct:3},
+{q:"What is my favorite flower?",options:["Sunflower","Lily","Rose","Tulip"],correct:2},
+{q:"What was the first song you dedicated to me on the guitar?",options:["sanam teri kasam","aga naga","nee paartha vizhigal","thangame"],correct:1},
+{q:"What is my favorite perfume scent?",options:["vanilla","floral ","citrus","Musk"],correct:0}
+];
+
+let current=0,score=0;
+
+function loadQuiz(){
+if(current<quizData.length){
+let q=quizData[current];
+let html="<h3>"+q.q+"</h3>";
+q.options.forEach((opt,i)=>{
+html+=`<button class="option-btn" onclick="checkAnswer(${i})">${opt}</button>`;
+});
+document.getElementById("quiz").innerHTML=html;
+}else{showResult();}
+}
+
+function checkAnswer(i){
+if(i===quizData[current].correct){
+score++;
+document.getElementById("feedback").innerText="❤️";
+}else{
+document.getElementById("feedback").innerText="🤨";
+}
+current++;
+setTimeout(()=>{document.getElementById("feedback").innerText="";loadQuiz();},700);
+}
+
+function showResult(){
+document.getElementById("scoreText").innerText="Your Score: "+score+"/5";
+let msg="";
+if(score===5) msg="Out of the world! You are the best I love you 😉😘";
+else if(score===4) msg="Fantastic! You are the best I love you 😉😘";
+else if(score===3) msg="Very good! You are the best I love you 😉😘";
+else msg="Happens... Still you are the best I love you 😉😘";
+document.getElementById("resultText").innerText=msg;
+document.getElementById("resultPopup").style.display="block";
+}
+
+function closePopup(){document.getElementById("resultPopup").style.display="none";}
+function continueAfterQuiz(){closePopup();nextSection(2);}
+
+function nextSection(n){
+document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+document.getElementById("section"+n).classList.add("active");
+}
+
+function openLetter(type){
+const letters={
+sad:"En thangamee 🤍 I know when you’re sad you might not always say it properly. Sometimes you go quiet. Sometimes you act normal. But I know you. And I care enough to notice. It’s okay to not feel okay. You don’t have to be strong every second of your life. You don’t have to handle everything alone. You’re allowed to feel heavy. You’re allowed to feel tired. And you’re definitely allowed to lean on me. If I was there right now, I wouldn’t even try to fix anything immediately. I would just sit next to you. Hold your hand. Maybe pull you into a tight hug and let you stay there for as long as you need. No pressure. No advice. Just comfort. You matter too much to me for your sadness to feel small. Whatever is hurting you we’ll face it together. You’re not alone in this. And I promise you, I’m not going anywhere. Even on your worst days, I choose you. Especially on your worst days 💘",
+miss:"So you’re missing me right now, aren’t you? 🥺 I wish I could see your face when you open this. That quiet little ache when you just want the other person near you. I want you to know something though you’re not alone in that. You live in my thoughts more than you realize. In the smallest, random moments. When I hear a song. When I see something cute. When something good happens and I instantly wish I could tell you first. It’s crazy how you’ve become such a natural part of my life. Missing you isn’t loud or dramatic — it’s soft and constant. Like a gentle reminder that my heart chose someone very special. I know we can’t always be physically next to each other, but that doesn’t change what we have. Distance doesn’t reduce feelings. If anything, it just makes every hug, every touch, every moment together feel even more precious. And listen to me carefully… I’ll come soon. And when I do, I’m not just giving you a normal hug. I’m going to hug you tightly — the kind where you can’t breathe properly but you don’t want to let go. I’m going to bury my face in you and stay there for a while. And yes, I’m giving you all the kisseys you’ve been missing too 😌💋 Until then, close your eyes for a second and imagine me wrapping my arms around you. Feel that warmth. That’s how much I care about you. That’s how real this is. You don’t have to feel empty. You’re loved. Deeply. Genuinely. Completely. And I’m always, always yours 💘",
+sleep:"Okay first of all why are you still awake? You’ve done enough for today. Even if it doesn’t feel like it. Even if you think you could’ve done more. You tried. And that matters. Close your eyes for a second and imagine I’m right there next to you. I’d probably poke you lightly and tell you to stop overthinking. Then I’d pull you closer and make you rest your head somewhere safe. I’d tell you random soft things until you slowly drift off. You don’t need to solve tomorrow tonight. The world can wait. Your responsibilities can wait. Your thoughts can wait. Right now, you just need rest. So sleep peacefully. And when I see you next, I’m definitely giving you a warm hug and a tiny forehead kiss for being such a hardworking human 🌙💕",
+motivation:"Mayiluu You are stronger than you think. I’ve seen you push through things you thought you couldn’t. I’ve seen you try again even when you were tired. That strength? That’s real. I know there are days where you doubt yourself. Days where you feel like you’re behind. But from where I stand, I see growth. I see effort. I see someone who keeps going even when it’s not easy. And that’s something I admire so much about you. You don’t need to be perfect. You just need to keep moving forward even slowly. And I’ll be right here cheering for you like your personal hype person. Go do your thing. Show the world what I already know — that you’re capable of amazing things. I am very proud of you. And I will always be the one cheering for you the loudest. Always. Go win, my favorite human 💖✨"
+};
+document.getElementById("letterText").innerText=letters[type];
+document.getElementById("letterPopup").style.display="block";
+}
+
+function closeLetter(){document.getElementById("letterPopup").style.display="none";}
+
+function heartSurprise(){
+    confetti({particleCount:250,spread:120});
+    
+    const msg = document.createElement("div");
+    msg.innerText = "I Love You Suryaaaaaaaa";
+    msg.style.fontSize = "40px";
+    msg.style.color = "#8B0000";
+    msg.style.marginTop = "20px";
+
+    const leftSection = document.querySelector(".left");
+    leftSection.appendChild(msg);
+}
+
+
+function playVideo(){
+document.getElementById("videoPlayer").style.display="block";
+document.getElementById("videoPlayer").play();
+}
+
+loadQuiz();
+function moveNo(){
+    const btn = document.getElementById("noBtn");
+    const x = Math.random() * (window.innerWidth - 150);
+    const y = Math.random() * (window.innerHeight - 100);
+
+    btn.style.position = "absolute";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+}
+
+function showFinal(){
+    document.getElementById("finalReveal").style.display = "block";
+}
+
+function playFullscreenVideo(){
+    const video = document.getElementById("videoPlayer");
+    video.style.display = "block";
+    video.requestFullscreen();
+    video.play();
+}
+
+function checkPassword(){
+    const input = document.getElementById("passInput").value.trim();
+    const message = document.getElementById("passMessage");
+
+    // Caesar Cipher (+4 shift)
+    const encrypted = "p";
+
+    if(input === encrypted){
+        message.innerText = "";
+        nextSection(1);
+    } else {
+        message.innerText = "Try again 💌";
+    }
+}
+
+let clueCount = 0;
+
+function showClue(){
+    const clues = [ "Clue 1: It’s something you’ve said to me more than once 💕",
+     "Clue 2: The simplest sentence can hold the biggest feeling 😌",
+      "Clue 3: Sometimes position matters darling 😉" ];
+
+    const clueText = document.getElementById("clueText");
+
+    if(clueCount < clues.length){
+        clueText.innerText = clues[clueCount];
+        clueCount++;
+    } else {
+        clueText.innerText = "That's all the clues 😌💌";
+    }
+}
+
+</script>
+
+</body>
+</html>
