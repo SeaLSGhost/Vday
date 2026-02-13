@@ -318,9 +318,11 @@ padding-top:35px;         /* move text lower visually */
              style="border-radius:20px; cursor:pointer;"
              onclick="playFullscreenVideo()">
 
-        <video id="videoPlayer" style="display:none;" controls>
-            <source src="https://drive.google.com/file/d/1pHEetmBBBxWPJaKx7JBN47EUKt1U4jsB/view?usp=sharing" type="video/mp4">
-        </video>
+        <video id="videoPlayer" controls>
+  <source src="https://drive.google.com/uc?export=download&id=1pHEetmBBBxWPJaKx7JBN47EUKt1U4jsB" type="video/mp4">
+</video>
+
+
     </div>
 </div>
 
@@ -438,7 +440,7 @@ function checkPassword(){
     const message = document.getElementById("passMessage");
 
     // Caesar Cipher (+4 shift)
-    const encrypted = "p";
+    const encrypted = "M pszi csy";
 
     if(input === encrypted){
         message.innerText = "";
